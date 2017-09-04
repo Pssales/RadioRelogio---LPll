@@ -43,7 +43,7 @@ public class Tela extends javax.swing.JFrame {
                         Play p = new Play(null, "hora", ps, true);
                         p.start();
                         try {
-                            p.sleep(1000);
+                            p.sleep(100000);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -74,6 +74,7 @@ public class Tela extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Rádio Relógio");
         setResizable(false);
 
         tabela.setModel(new javax.swing.table.DefaultTableModel(
@@ -127,20 +128,18 @@ public class Tela extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(102, 102, 102)
+                .addGap(108, 108, 108)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
                     .addComponent(relogio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(play, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(AdicionaMusica, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(AdicionaMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(32, 32, 32)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(horaAtual, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -155,8 +154,8 @@ public class Tela extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(horaAtual, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(horaAtual, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(play, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,15 +175,16 @@ public class Tela extends javax.swing.JFrame {
     private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
         if (ps.emOperacao) {
         } else if (!musicas.isEmpty()) {
-            Play p = new Play(musicas.get(0), "musica", ps, true);
-            p.start();
+            for (int i = 0; i < musicas.size(); i++) {
+                Play p = new Play(musicas.get(i), "musica", ps, true);
+                p.start();
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Nenhuma música seleionada, adicione primeiro uma musica!");
         }
     }//GEN-LAST:event_playActionPerformed
 
     private void AdicionaMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionaMusicaActionPerformed
-
         JFileChooser arquivo = new JFileChooser();
         arquivo.setFileSelectionMode(JFileChooser.APPROVE_OPTION);
         FileNameExtensionFilter filtroMP3 = new FileNameExtensionFilter("Arquivos MP3", "mp3");
@@ -207,8 +207,8 @@ public class Tela extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         JOptionPane.showInputDialog("Informe hora e minuto para prograr o alarme.\n"
-                                                +"Favor inserir no formato: 'HH:mm'");
-        
+                + "Favor inserir no formato: 'HH:mm'");
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

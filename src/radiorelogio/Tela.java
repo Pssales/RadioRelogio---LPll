@@ -175,7 +175,9 @@ public class Tela extends javax.swing.JFrame {
     private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
         if (ps.emOperacao) {
         } else if (!musicas.isEmpty()) {
+            
             for (int i = 0; i < musicas.size(); i++) {
+                System.out.println(musicas.get(i));
                 Play p = new Play(musicas.get(i), "musica", ps, true);
                 p.start();
             }
@@ -194,7 +196,6 @@ public class Tela extends javax.swing.JFrame {
             File mp3Selecionado = arquivo.getSelectedFile();
             musicas.add(mp3Selecionado);
             ((DefaultTableModel) tabela.getModel()).addRow(new Object[]{mp3Selecionado.getName()});
-
         } else {
             JOptionPane.showMessageDialog(null, "Arquivo não selecionado!");
         }

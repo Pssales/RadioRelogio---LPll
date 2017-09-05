@@ -32,7 +32,7 @@ public class PlaySinc {
         }
         this.emOperacao = true;
 
-        if (this.tipo == "hora") {
+        if (this.tipo == "hora") { 
             Player player;
             FileInputStream musica;
             try {//fala hora:
@@ -53,11 +53,11 @@ public class PlaySinc {
             Player player;
             FileInputStream musica;
             try {
+                System.out.println(this.caminho);
                 musica = new FileInputStream(this.caminho);
                 player = new Player(musica);
 
                 player.play();
-                System.out.println("Tocando agora " + afile[1].getName());
             } catch (Exception e) {
                 System.out.println(e);
             }

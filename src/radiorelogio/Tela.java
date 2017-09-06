@@ -204,16 +204,20 @@ public class Tela extends javax.swing.JFrame {
 
     private void AdicionaMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionaMusicaActionPerformed
         JFileChooser arquivo = new JFileChooser();
-        arquivo.setFileSelectionMode(JFileChooser.APPROVE_OPTION);
+        arquivo.setMultiSelectionEnabled(rootPaneCheckingEnabled);
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivos MP3", "mp3");
-        arquivo.setFileFilter(filtro);
-        arquivo.showOpenDialog(arquivo);
-        if (arquivo.getSelectedFile() != null) {
-            File musica = arquivo.getSelectedFile();
-            musicas.add(musica);
-            ((DefaultTableModel) tabela.getModel()).addRow(new Object[]{musica.getName()});
-        } else {
-            JOptionPane.showMessageDialog(null, "Arquivo não selecionado!");
+        int retorno = arquivo.showOpenDialog(null);
+        if (retorno == JFileChooser.APPROVE_OPTION) {
+            if (arquivo.getSelectedFile() != null) {
+                File[] musica = arquivo.getSelectedFiles();
+                for (int i = 0; i < musica.length; i++) {
+                    musicas.add(musica[i]);
+                    ((DefaultTableModel) tabela.getModel()).addRow(new Object[]{musica[i].getName()});
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Arquivo não selecionado!");
+            }
         }
     }//GEN-LAST:event_AdicionaMusicaActionPerformed
 

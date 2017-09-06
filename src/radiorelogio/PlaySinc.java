@@ -35,11 +35,11 @@ public class PlaySinc {
         if (this.tipo == "hora") { 
             Player player;
             FileInputStream musica;
-            try {//fala hora:
+            try {
                 musica = new FileInputStream("src/horas/HRS" + new SimpleDateFormat("HH").format(Calendar.getInstance().getTime()) + ".mp3");
                 player = new Player(musica);
                 player.play();
-                //fala minutos:
+                
                 musica = new FileInputStream("src/horas/MIN" + new SimpleDateFormat("mm").format(Calendar.getInstance().getTime()) + ".mp3");
                 player = new Player(musica);
                 player.play();
@@ -71,11 +71,11 @@ public class PlaySinc {
     public void playhora(File caminho, String tipo) {
         Player player;
         FileInputStream musica;
-        try {//fala hora:
+        try {
             musica = new FileInputStream("src/horas/HRS" + new SimpleDateFormat("HH").format(Calendar.getInstance().getTime()) + ".mp3");
             player = new Player(musica);
             player.play();
-            //fala minutos:
+           
             musica = new FileInputStream("src/horas/MIN" + new SimpleDateFormat("mm").format(Calendar.getInstance().getTime()) + ".mp3");
             player = new Player(musica);
             player.play();

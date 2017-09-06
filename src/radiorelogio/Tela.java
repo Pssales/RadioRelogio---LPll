@@ -23,7 +23,9 @@ import javax.swing.table.DefaultTableModel;
 public class Tela extends javax.swing.JFrame {
 
     static ArrayList<File> musicas = new ArrayList<>();
+    static ArrayList<String> alarmes = new ArrayList<>();
     static PlaySinc ps = new PlaySinc();
+    static Play play;
 
     public Tela() {
         initComponents();
@@ -40,10 +42,10 @@ public class Tela extends javax.swing.JFrame {
             public void run() {
                 while (true) {
                     if (new SimpleDateFormat("mm").format(Calendar.getInstance().getTime()).equals("00")) {
-                        Play p = new Play(null, "hora", ps, true);
-                        p.start();
+                        play = new Play(null, "hora", ps, true);
+                        play.start();
                         try {
-                            p.sleep(100000);
+                            play.sleep(100000);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -66,7 +68,7 @@ public class Tela extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
         relogio = new javax.swing.JLabel();
-        play = new javax.swing.JButton();
+        btn_play = new javax.swing.JButton();
         horaAtual = new javax.swing.JButton();
         AdicionaMusica = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -87,14 +89,14 @@ public class Tela extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tabela);
 
-        relogio.setFont(new java.awt.Font("Times New Roman", 0, 48)); // NOI18N
+        relogio.setFont(new java.awt.Font("Times New Roman", 0, 58)); // NOI18N
         relogio.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         relogio.setText("teste");
 
-        play.setText("Play");
-        play.addActionListener(new java.awt.event.ActionListener() {
+        btn_play.setText("Play");
+        btn_play.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playActionPerformed(evt);
+                btn_playActionPerformed(evt);
             }
         });
 
@@ -119,7 +121,12 @@ public class Tela extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Pause");
+        jButton1.setText("Pause/Play");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Remover Música");
 
@@ -128,89 +135,110 @@ public class Tela extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(108, 108, 108)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
-                    .addComponent(relogio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(play, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(AdicionaMusica, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(108, 108, 108)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(horaAtual, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4))))
-                .addContainerGap(108, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btn_play, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(AdicionaMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(27, 27, 27)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(horaAtual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                                .addGap(27, 27, 27))
+                            .addComponent(relogio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addGap(44, 44, 44)
                 .addComponent(relogio, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(horaAtual, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(play, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(horaAtual, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(btn_play, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(AdicionaMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(26, 26, 26)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83))
+                .addGap(69, 69, 69))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
+    private void btn_playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_playActionPerformed
         if (ps.emOperacao) {
+            JOptionPane.showMessageDialog(null, "Já existe uma musica em operação");
+
         } else if (!musicas.isEmpty()) {
-            
             for (int i = 0; i < musicas.size(); i++) {
                 System.out.println(musicas.get(i));
-                Play p = new Play(musicas.get(i), "musica", ps, true);
-                p.start();
+                play = new Play(musicas.get(i), "musica", ps, true);
+                play.start();
             }
         } else {
             JOptionPane.showMessageDialog(null, "Nenhuma música seleionada, adicione primeiro uma musica!");
         }
-    }//GEN-LAST:event_playActionPerformed
+    }//GEN-LAST:event_btn_playActionPerformed
 
     private void AdicionaMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionaMusicaActionPerformed
         JFileChooser arquivo = new JFileChooser();
         arquivo.setFileSelectionMode(JFileChooser.APPROVE_OPTION);
-        FileNameExtensionFilter filtroMP3 = new FileNameExtensionFilter("Arquivos MP3", "mp3");
-        arquivo.setFileFilter(filtroMP3);
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivos MP3", "mp3");
+        arquivo.setFileFilter(filtro);
         arquivo.showOpenDialog(arquivo);
         if (arquivo.getSelectedFile() != null) {
-            File mp3Selecionado = arquivo.getSelectedFile();
-            musicas.add(mp3Selecionado);
-            ((DefaultTableModel) tabela.getModel()).addRow(new Object[]{mp3Selecionado.getName()});
+            File musica = arquivo.getSelectedFile();
+            musicas.add(musica);
+            ((DefaultTableModel) tabela.getModel()).addRow(new Object[]{musica.getName()});
         } else {
             JOptionPane.showMessageDialog(null, "Arquivo não selecionado!");
         }
     }//GEN-LAST:event_AdicionaMusicaActionPerformed
 
     private void horaAtualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_horaAtualActionPerformed
-        Play rh = new Play(null, "hora", ps, false);
-        rh.start();
+        play = new Play(null, "hora", ps, false);
+        play.start();
     }//GEN-LAST:event_horaAtualActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        JOptionPane.showInputDialog("Informe hora e minuto para prograr o alarme.\n"
-                + "Favor inserir no formato: 'HH:mm'");
-
+        alarmes.add(JOptionPane.showInputDialog("Informe hora e minuto para prograr o alarme.\n"
+                + "Favor inserir no formato: 'HH:mm'"));
+        Alarme a = new Alarme(alarmes);
+        a.start();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (play.playsic.emOperacao == true) {
+            play.playsic.emOperacao = false;
+            play.suspend();
+        } else {
+            play.resume();
+            play.playsic.emOperacao = true;
+
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,12 +279,12 @@ public class Tela extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AdicionaMusica;
+    private javax.swing.JButton btn_play;
     private javax.swing.JButton horaAtual;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton play;
     public static javax.swing.JLabel relogio;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables

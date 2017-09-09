@@ -6,6 +6,11 @@
 package radiorelogio;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import javazoom.jl.player.Player;
 
 /**
  *
@@ -13,12 +18,12 @@ import java.io.File;
  */
 public class Play extends Thread {
 
-    static File caminho;
+    ArrayList<File> caminho = new ArrayList<>();
     static String tipo;
     PlaySinc playsic;
     boolean sinc;
 
-    public Play(File caminho, String tipo, PlaySinc playsinc, boolean sinc) {
+    public Play(ArrayList<File> caminho, String tipo, PlaySinc playsinc, boolean sinc) {
         this.caminho = caminho;
         this.tipo = tipo;
         this.playsic = playsinc;
@@ -28,10 +33,27 @@ public class Play extends Thread {
     @Override
     public void run() {
         System.out.println(this.sinc);
-        if (this.sinc==true) {
+        if (this.sinc == true) {
             this.playsic.playSinc(this.caminho, this.tipo);
         } else {
-            this.playsic.playhora(this.caminho, this.tipo);
+            this.playhora();
+        }
+
+    }
+
+    public void playhora() {
+        Player player;
+        FileInputStream musica;
+        try {
+            musica = new FileInputStream("src/horas/HRS" + new SimpleDateFormat("HH").format(Calendar.getInstance().getTime()) + ".mp3");
+            player = new Player(musica);
+            player.play();
+
+            musica = new FileInputStream("src/horas/MIN" + new SimpleDateFormat("mm").format(Calendar.getInstance().getTime()) + ".mp3");
+            player = new Player(musica);
+            player.play();
+        } catch (Exception e) {
+            System.out.println(e);
         }
 
     }
@@ -61,6 +83,6 @@ ok    - A cada hora cheia, respeitando o término da música que estiver tocando
 
 ok    - Deverá haver um botão para que a hora atual seja informada, por cima da música que estiver tocando.
 
-    - Deverá ser possível a programação de N horários em que o rádio relógio irá "Despertar"
+ok    - Deverá ser possível a programação de N horários em que o rádio relógio irá "Despertar"
 
-*/
+ */

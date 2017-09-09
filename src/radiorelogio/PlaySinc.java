@@ -8,6 +8,7 @@ package radiorelogio;
 import java.io.File;
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import javazoom.jl.player.Player;
 
@@ -16,14 +17,10 @@ import javazoom.jl.player.Player;
  * @author Camila
  */
 public class PlaySinc {
-
-    static File caminho;
-    static String tipo;
+    
     public boolean emOperacao;
 
-    public synchronized void playSinc(File caminho, String tipo) {
-        this.caminho = caminho;
-        this.tipo = tipo;
+    public synchronized void playSinc(ArrayList<File> caminho, String tipo) {
         while (this.emOperacao == true) {  // Aguarda a liberação da conta para operação
             try {
                 wait();
@@ -32,14 +29,14 @@ public class PlaySinc {
         }
         this.emOperacao = true;
 
-        if (this.tipo == "hora") { 
+        if (tipo == "hora") {
             Player player;
             FileInputStream musica;
             try {
                 musica = new FileInputStream("src/horas/HRS" + new SimpleDateFormat("HH").format(Calendar.getInstance().getTime()) + ".mp3");
                 player = new Player(musica);
                 player.play();
-                
+
                 musica = new FileInputStream("src/horas/MIN" + new SimpleDateFormat("mm").format(Calendar.getInstance().getTime()) + ".mp3");
                 player = new Player(musica);
                 player.play();
@@ -53,8 +50,8 @@ public class PlaySinc {
             Player player;
             FileInputStream musica;
             try {
-                System.out.println(this.caminho);
-                musica = new FileInputStream(this.caminho);
+                System.out.println(caminho);
+                musica = new FileInputStream(caminho.get(0));
                 player = new Player(musica);
 
                 player.play();
@@ -65,23 +62,6 @@ public class PlaySinc {
 
         this.emOperacao = false;
         notifyAll(); //notifica os objetos que estão esperando
-
-    }
-
-    public void playhora(File caminho, String tipo) {
-        Player player;
-        FileInputStream musica;
-        try {
-            musica = new FileInputStream("src/horas/HRS" + new SimpleDateFormat("HH").format(Calendar.getInstance().getTime()) + ".mp3");
-            player = new Player(musica);
-            player.play();
-           
-            musica = new FileInputStream("src/horas/MIN" + new SimpleDateFormat("mm").format(Calendar.getInstance().getTime()) + ".mp3");
-            player = new Player(musica);
-            player.play();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
 
     }
 }

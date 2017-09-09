@@ -84,7 +84,7 @@ public class Tela extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome Música"
+                "Nome Música", "caminho"
             }
         ));
         jScrollPane1.setViewportView(tabela);
@@ -129,6 +129,11 @@ public class Tela extends javax.swing.JFrame {
         });
 
         jButton2.setText("Remover Música");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -163,7 +168,6 @@ public class Tela extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(relogio, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -192,11 +196,8 @@ public class Tela extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Já existe uma musica em operação");
 
         } else if (!musicas.isEmpty()) {
-            for (int i = 0; i < musicas.size(); i++) {
-                System.out.println(musicas.get(i));
-                play = new Play(musicas.get(i), "musica", ps, true);
-                play.start();
-            }
+            play = new Play(musicas, "musica", ps, true);
+            play.start();
         } else {
             JOptionPane.showMessageDialog(null, "Nenhuma música seleionada, adicione primeiro uma musica!");
         }
@@ -206,15 +207,15 @@ public class Tela extends javax.swing.JFrame {
         JFileChooser arquivo = new JFileChooser();
         arquivo.setMultiSelectionEnabled(rootPaneCheckingEnabled);
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivos MP3", "mp3");
+        arquivo.setFileFilter(filtro);
         int retorno = arquivo.showOpenDialog(null);
         if (retorno == JFileChooser.APPROVE_OPTION) {
             if (arquivo.getSelectedFile() != null) {
                 File[] musica = arquivo.getSelectedFiles();
                 for (int i = 0; i < musica.length; i++) {
                     musicas.add(musica[i]);
-                    ((DefaultTableModel) tabela.getModel()).addRow(new Object[]{musica[i].getName()});
+                    ((DefaultTableModel) tabela.getModel()).addRow(new Object[]{musica[i].getName(), musica[i].getAbsoluteFile()});
                 }
-
             } else {
                 JOptionPane.showMessageDialog(null, "Arquivo não selecionado!");
             }
@@ -243,6 +244,18 @@ public class Tela extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (tabela.getSelectedRow() != -1) {
+            String vet = tabela.getValueAt(tabela.getSelectedRow(), 1).toString();
+            System.out.println(vet);
+            for (int i = 0; i < musicas.size(); i++) {
+                if (musicas.get(i).equals(vet)) {
+                    musicas.remove(i);
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -17,10 +17,10 @@ import javazoom.jl.player.Player;
  * @author Camila
  */
 public class PlaySinc {
-    
+
     public boolean emOperacao;
 
-    public synchronized void playSinc(ArrayList<File> caminho, String tipo) {
+    public synchronized void playSinc(String music, ArrayList<File> caminho, String tipo) {
         while (this.emOperacao == true) {  // Aguarda a liberação da conta para operação
             try {
                 wait();
@@ -44,23 +44,29 @@ public class PlaySinc {
                 System.out.println(e);
             }
         } else {
-            File file = new File("src/musica/");
-            File afile[] = file.listFiles();
-
+            
+            File selecionada = new File(music);
             Player player;
+            boolean achou = false;
             FileInputStream musica;
             try {
-                System.out.println(caminho);
-                musica = new FileInputStream(caminho.get(0));
-                player = new Player(musica);
+                for (int i = 0; i < caminho.size(); i++) {
+                    if (caminho.get(i).equals(selecionada) || achou==true) {
+                        achou=true;
+                        System.out.println(caminho.get(i));
+                        musica = new FileInputStream(caminho.get(i));
+                        player = new Player(musica);
+                        player.play();
+                    }
+                }
 
-                player.play();
             } catch (Exception e) {
                 System.out.println(e);
             }
         }
 
         this.emOperacao = false;
+
         notifyAll(); //notifica os objetos que estão esperando
 
     }

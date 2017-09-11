@@ -19,22 +19,26 @@ import javazoom.jl.player.Player;
 public class Play extends Thread {
 
     ArrayList<File> caminho = new ArrayList<>();
-    static String tipo;
+    static String tipo, music;
     PlaySinc playsic;
     boolean sinc;
 
-    public Play(ArrayList<File> caminho, String tipo, PlaySinc playsinc, boolean sinc) {
+    public Play(String music ,ArrayList<File> caminho, String tipo, PlaySinc playsinc, boolean sinc) {
+        this.music = music;
         this.caminho = caminho;
         this.tipo = tipo;
         this.playsic = playsinc;
         this.sinc = sinc;
+    }
+    public Play() {
+ 
     }
 
     @Override
     public void run() {
         System.out.println(this.sinc);
         if (this.sinc == true) {
-            this.playsic.playSinc(this.caminho, this.tipo);
+            this.playsic.playSinc(this.music,this.caminho, this.tipo);
         } else {
             this.playhora();
         }
@@ -71,11 +75,11 @@ ok    - Deverá ser mostrada a hora no formato: HH:MM:SS;
 
 ok    - Deverá conter um tabela que permita ao usuário selecionar uma lista de músicas que ele deseje ouvir;
 
-    - Essa tabela deverá permitir incluir e excluir arquivos MP3 para serem tocados;
+ok    - Essa tabela deverá permitir incluir e excluir arquivos MP3 para serem tocados;
 
-    - Ao selecionar uma música na tabela e ao pressionar o botão play, a música deverá ser tocada e ao seu término, caso exista, deverá iniciar a próxima música escolhida, da sequência, e assim sucessivamente até a última música da lista;
+ok    - Ao selecionar uma música na tabela e ao pressionar o botão play, a música deverá ser tocada e ao seu término, caso exista, deverá iniciar a próxima música escolhida, da sequência, e assim sucessivamente até a última música da lista;
 
-    - A qualquer momento o usuário poderá incluir ou excluir música, inclusive se o aplicativo estiver tocando alguma;
+ok    - A qualquer momento o usuário poderá incluir ou excluir música, inclusive se o aplicativo estiver tocando alguma;
 
 ok    - A interface deverá apresentar um botão para para a música que estiver tocando;
 

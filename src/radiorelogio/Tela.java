@@ -42,7 +42,7 @@ public class Tela extends javax.swing.JFrame {
             public void run() {
                 while (true) {
                     if (new SimpleDateFormat("mm").format(Calendar.getInstance().getTime()).equals("00")) {
-                        play = new Play(null, "hora", ps, true);
+                        play = new Play(null, null, "hora", ps, true);
                         play.start();
                         try {
                             play.sleep(100000);
@@ -54,6 +54,19 @@ public class Tela extends javax.swing.JFrame {
             }
         }.start();
 
+    }
+
+    public void readJTable() {
+
+        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+        modelo.setNumRows(0);
+
+        for (int i = 0; i < musicas.size(); i++) {
+
+            modelo.addRow(new Object[]{
+                musicas.get(i).getName(),
+                musicas.get(i).getAbsoluteFile(),});
+        }
     }
 
     /**
@@ -192,14 +205,18 @@ public class Tela extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_playActionPerformed
-        if (ps.emOperacao) {
-            JOptionPane.showMessageDialog(null, "Já existe uma musica em operação");
-
-        } else if (!musicas.isEmpty()) {
-            play = new Play(musicas, "musica", ps, true);
-            play.start();
+        if (tabela.getSelectedRow() != -1) {
+            if (ps.emOperacao) {
+                JOptionPane.showMessageDialog(null, "Já existe uma musica em operação");
+            } else if (!musicas.isEmpty()) {
+                String music = tabela.getValueAt(tabela.getSelectedRow(), 1).toString();
+                play = new Play(music, musicas, "musica", ps, true);
+                play.start();
+            } else {
+                JOptionPane.showMessageDialog(null, "Nenhuma música seleionada, adicione primeiro uma musica!");
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Nenhuma música seleionada, adicione primeiro uma musica!");
+            JOptionPane.showMessageDialog(null, "Selecione a musica a ser tocada.");
         }
     }//GEN-LAST:event_btn_playActionPerformed
 
@@ -214,8 +231,8 @@ public class Tela extends javax.swing.JFrame {
                 File[] musica = arquivo.getSelectedFiles();
                 for (int i = 0; i < musica.length; i++) {
                     musicas.add(musica[i]);
-                    ((DefaultTableModel) tabela.getModel()).addRow(new Object[]{musica[i].getName(), musica[i].getAbsoluteFile()});
                 }
+                readJTable();
             } else {
                 JOptionPane.showMessageDialog(null, "Arquivo não selecionado!");
             }
@@ -223,7 +240,7 @@ public class Tela extends javax.swing.JFrame {
     }//GEN-LAST:event_AdicionaMusicaActionPerformed
 
     private void horaAtualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_horaAtualActionPerformed
-        play = new Play(null, "hora", ps, false);
+        play = new Play();
         play.start();
     }//GEN-LAST:event_horaAtualActionPerformed
 
@@ -247,13 +264,15 @@ public class Tela extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (tabela.getSelectedRow() != -1) {
-            String vet = tabela.getValueAt(tabela.getSelectedRow(), 1).toString();
-            System.out.println(vet);
             for (int i = 0; i < musicas.size(); i++) {
-                if (musicas.get(i).equals(vet)) {
+                String vet = tabela.getValueAt(tabela.getSelectedRow(), 1).toString();
+                File remove = new File(vet);
+                if (musicas.get(i).equals(remove)) {
                     musicas.remove(i);
                 }
             }
+            readJTable();
+            System.out.println(musicas);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

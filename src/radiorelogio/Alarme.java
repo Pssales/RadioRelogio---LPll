@@ -27,7 +27,7 @@ public class Alarme extends Thread{
         while(true){
             for (int i = 0; i < alarmes.size(); i++) {
                 if(new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime()).equals(this.alarmes.get(i))){
-                    Play p = new Play(null, "hora", ps, false);
+                    Play p = new Play();
                     p.start();
                     try {
                         p.sleep(100000);
